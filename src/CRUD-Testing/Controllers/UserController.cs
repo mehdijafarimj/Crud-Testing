@@ -13,6 +13,14 @@ public class UserController:ControllerBase
     {
         _userService = userService;
     }
+
+    [HttpGet]
+    public IActionResult GetAll()
+    {        
+        var users = _userService.GetAll();
+        return Ok(users);
+    }
+  
     [HttpPost]
     public IActionResult AddUser(string name, string lastName,int age,string address,string nationalCode)    
     {

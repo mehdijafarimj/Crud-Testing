@@ -10,9 +10,10 @@ using System.Threading.Tasks;
 namespace Logic;
 public interface IProductService
 {
-    public void Add(string name,double price,string description);
-    public void Update(int Id,string name, double price, string description);
-    public void Delete(int Id);
+    List<Product> GetAll();
+    void Add(string name,double price,string description);
+    void Update(int Id,string name, double price, string description);
+    void Delete(int Id);
 }
 public class ProductService : IProductService
 {
@@ -21,6 +22,13 @@ public class ProductService : IProductService
     {
         _context = context;
     }
+
+    public List<Product> GetAll()
+    {
+        var products = _context.Products.ToList();
+        return products;    
+    }
+
     public void Add(string name, double price, string description)
     {
         Product product = new Product();

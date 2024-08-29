@@ -12,12 +12,21 @@ public class ProductController:ControllerBase
     {
         _productService = product;
     }
+
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        var products = _productService.GetAll();
+        return Ok(products);
+    }
+    
     [HttpPost]
     public IActionResult AddProduct(string name,double price,string description)
     {
         _productService.Add(name, price, description);
         return NoContent();
     }
+
     [HttpPut]
     public IActionResult UpdateProduct(int Id,string name,double price,string description)
     {

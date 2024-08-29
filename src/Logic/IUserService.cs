@@ -4,9 +4,10 @@ using Infrastructure;
 namespace Logic;
 public interface IUserService
 {
-    public void Add(string name, string lastName, int age, string address, string nationalCode);
-    public void Update(int Id, string name, string lastName, int age, string address, string nationalCode);
-    public void Delete(int Id);
+    List<User> GetAll();
+    void Add(string name, string lastName, int age, string address, string nationalCode);
+    void Update(int Id, string name, string lastName, int age, string address, string nationalCode);
+    void Delete(int Id);
 }
 public class UserService : IUserService
 {
@@ -15,6 +16,13 @@ public class UserService : IUserService
     {
         _context = context;
     }
+
+    public List<User> GetAll()
+    {
+        var users = _context.Users.ToList();
+        return users;
+    }
+
     public void Add(string name, string lastName, int age, string address, string nationalCode)
     {
         User user = new User();
@@ -49,5 +57,5 @@ public class UserService : IUserService
 
         _context.Users.Remove(user);
         _context.SaveChanges();
-    }
+    }    
 }

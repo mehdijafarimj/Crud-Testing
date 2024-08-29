@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 namespace Logic;
 public interface IAdminService
 {
-    public void Add(string name, string userName, int age, string password, string email, string address);
-    public void Update(int Id, string name, string userName, int age, string password, string email, string address);  
-    public void Delete(int Id);
+    List<Admin> GetAll();
+    void Add(string name,string lastName, string userName, int age, string password, string email, string address);
+    void Update(int Id, string name,string lastName, string userName, int age, string password, string email, string address);  
+    void Delete(int Id);    
 }
 public class AdminService : IAdminService
 {
@@ -20,10 +21,18 @@ public class AdminService : IAdminService
     {
         _context = context;
     }
-    public void Add(string name, string userName, int age, string password, string email, string address)
+
+    public List<Admin> GetAll()
+    {
+        var admins = _context.Admins.ToList();
+        return admins;
+    }
+
+    public void Add(string name,string lastName, string userName, int age, string password, string email, string address)
     {
         Admin admin = new Admin();
         admin.Name = name;
+        admin.LastName = lastName;
         admin.UserName = userName;
         admin.Age = age;
         admin.Password = password;
@@ -34,11 +43,12 @@ public class AdminService : IAdminService
         _context.SaveChanges();
     }
     
-    public void Update(int Id, string name, string userName, int age, string password, string email, string address)
+    public void Update(int Id, string name,string lastName, string userName, int age, string password, string email, string address)
     {
         Admin admin = new Admin();
         admin.Id = Id;
         admin.Name=name;
+        admin.LastName = lastName;
         admin.UserName = userName;
         admin.Age = age;
         admin.Password = password;
