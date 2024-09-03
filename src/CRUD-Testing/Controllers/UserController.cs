@@ -1,4 +1,5 @@
 ﻿using Logic;
+using Logic.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.AccessControl;
 
@@ -20,18 +21,25 @@ public class UserController:ControllerBase
         var users = _userService.GetAll();
         return Ok(users);
     }
+
+    [HttpGet("GetById")]
+    public IActionResult GetById(int Id)
+    {
+        var user = _userService.GetById(Id);
+        return Ok(user);
+    }
   
     [HttpPost]
-    public IActionResult AddUser(string name, string lastName,int age,string address,string nationalCode)    
+    public IActionResult AddUser(CreateUserDto dto)    
     {
-        _userService.Add(name, lastName, age,address,nationalCode);
+        _userService.Add(dto);
         return NoContent(); 
     }
     
     [HttpPut]
-    public IActionResult UpdateUser(int Id, string name, string lastName, int age, string address, string nationalCode)
+    public IActionResult UpdateUser(UpdateUserDto dto)
     {
-        _userService.Update(Id, name, lastName, age, address, nationalCode);
+        _userService.Update(dto);
         return NoContent();
     }
 

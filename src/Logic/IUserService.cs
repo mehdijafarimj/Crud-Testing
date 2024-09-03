@@ -1,12 +1,14 @@
 ﻿using Domain;
 using Infrastructure;
+using Logic.Dtos;
 
 namespace Logic;
 public interface IUserService
 {
     List<User> GetAll();
-    void Add(string name, string lastName, int age, string address, string nationalCode);
-    void Update(int Id, string name, string lastName, int age, string address, string nationalCode);
+    User GetById(int id);
+    void Add(CreateUserDto dto);
+    void Update(UpdateUserDto dto);
     void Delete(int Id);
 }
 public class UserService : IUserService
@@ -23,28 +25,44 @@ public class UserService : IUserService
         return users;
     }
 
-    public void Add(string name, string lastName, int age, string address, string nationalCode)
+    public User GetById(int id)
+    {
+        var user = _context.Users.Where(i => i.Id == id)
+            .Select(i => new User
+            {
+               Id = i.Id,
+               Name = i.Name,
+               LastName = i.LastName,
+               Age = i.Age,
+               Address = i.Address,
+               NationalCode = i.NationalCode
+            }).FirstOrDefault();
+       
+        return user;
+    }
+
+    public void Add(CreateUserDto dto)
     {
         User user = new User();
-        user.Name = name;
-        user.LastName = lastName;
-        user.Age = age;
-        user.Address = address;
-        user.NationalCode = nationalCode;
+        user.Name = dto.Name;
+        user.LastName = dto.LastName;
+        user.Age = dto.Age;
+        user.Address = dto.Address;
+        user.NationalCode = dto.NationalCode;
 
         _context.Users.Add(user);
         _context.SaveChanges();
     }
 
-    public void Update(int Id, string name, string lastName, int age, string address, string nationalCode)
+    public void Update(UpdateUserDto dto)
     {
         User user = new User();
-        user.Id = Id;
-        user.Name = name;
-        user.LastName = lastName;
-        user.Age = age;
-        user.Address = address;
-        user.NationalCode = nationalCode;
+        user.Id = dto.Id;
+        user.Name = dto.Name;
+        user.LastName = dto.LastName;
+        user.Age = dto.Age;
+        user.Address = dto.Address;
+        user.NationalCode = dto.NationalCode;
 
         _context.Users.Update(user);
         _context.SaveChanges();

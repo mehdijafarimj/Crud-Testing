@@ -12,6 +12,12 @@ public class UserMapping : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.HasOne(a => a.Admin)
+            .WithMany(i => i.Users)
+            .HasForeignKey(a => a.AdminId)
+            .OnDelete(DeleteBehavior.ClientSetNull);
+        
+        
         builder.HasKey(i => i.Id);
 
         builder.Property(i => i.Name)

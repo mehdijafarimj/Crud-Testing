@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Infrastructure;
+using Logic.Dtos;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,9 @@ namespace Logic;
 public interface IProductService
 {
     List<Product> GetAll();
-    void Add(string name,double price,string description);
-    void Update(int Id,string name, double price, string description);
+    Product GetById(int Id);
+    void Add(CreateProductDto dto);
+    void Update(UpdateProductDto dto);
     void Delete(int Id);
 }
 public class ProductService : IProductService
@@ -29,23 +31,38 @@ public class ProductService : IProductService
         return products;    
     }
 
-    public void Add(string name, double price, string description)
+    public Product GetById(int id)
+    {
+        var product = _context.Products.Where(i => i.Id == id)
+            .Select(i => new Product
+        {
+            Id = i.Id,
+            Name = i.Name,
+            Price = i.Price,
+            Description = i.Description
+        }).FirstOrDefault();
+
+        return product;
+    }
+
+    public void Add(CreateProductDto dto)
     {
         Product product = new Product();
-        product.Name = name;
-        product.Price = price;
-        product.Description = description;
+        product.Name = dto.Name;
+        product.Price = dto.Price;
+        product.Description = dto.Description;
+
         _context.Products.Add(product);
         _context.SaveChanges();
     }
     
-    public void Update(int Id,string name, double price, string description)
+    public void Update(UpdateProductDto dto)
     {
         Product product = new Product();
-        product.Id = Id;
-        product.Name = name;
-        product.Price = price;
-        product.Description = description;
+        product.Id = dto.Id;
+        product.Name = dto.Name;
+        product.Price = dto.Price;
+        product.Description = dto.Description;
 
         _context.Products.Update(product);
         _context.SaveChanges();

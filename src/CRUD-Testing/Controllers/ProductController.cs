@@ -1,4 +1,5 @@
 ﻿using Logic;
+using Logic.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRUD_Testing.Controllers;
@@ -13,24 +14,31 @@ public class ProductController:ControllerBase
         _productService = product;
     }
 
-    [HttpGet]
+    [HttpGet("GetAll")]
     public IActionResult GetAll()
     {
         var products = _productService.GetAll();
         return Ok(products);
     }
+
+    [HttpGet("GetById")]
+    public IActionResult GetById(int Id)
+    {
+        var product = _productService.GetById(Id);
+        return Ok(product);
+    }
     
     [HttpPost]
-    public IActionResult AddProduct(string name,double price,string description)
+    public IActionResult AddProduct(CreateProductDto dto)
     {
-        _productService.Add(name, price, description);
+        _productService.Add(dto);
         return NoContent();
     }
 
     [HttpPut]
-    public IActionResult UpdateProduct(int Id,string name,double price,string description)
+    public IActionResult UpdateProduct(UpdateProductDto dto)
     {
-        _productService.Update(Id, name, price, description);
+        _productService.Update(dto);
         return NoContent();
     }
     [HttpDelete("{Id}")]

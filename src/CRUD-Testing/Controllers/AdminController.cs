@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Infrastructure;
 using Logic;
+using Logic.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
@@ -14,24 +15,32 @@ public class AdminController : ControllerBase
     {
         _adminService = adminService;
     }
+  
     [HttpGet("GetAll")]
     public IActionResult GetAll()
     {
         var admins = _adminService.GetAll();
         return Ok(admins);
     }
+
+    [HttpGet("GetById")]
+    public IActionResult GetById(int Id)
+    {
+        var admin = _adminService.GetById(Id);
+        return Ok(admin);
+    }
  
     [HttpPost]
-    public IActionResult AddAdmin(string name,string lastName, string userName, int age, string password, string email, string address)
+    public IActionResult AddAdmin(CreateAdminDto dto)
     {
-        _adminService.Add(name,lastName, userName, age, password, email, address);
+        _adminService.Add(dto);
         return NoContent();
     }
 
     [HttpPut]
-    public IActionResult UpdateAdmin(int Id, string name,string lastName, string userName, int age, string password, string email, string address)
+    public IActionResult UpdateAdmin(UpdateAdminDto dto)
     {
-        _adminService.Update(Id, name,lastName, userName, age, password, email, address);
+        _adminService.Update(dto);
         return NoContent();
     }
 

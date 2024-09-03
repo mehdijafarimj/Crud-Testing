@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Infrastructure;
+using Logic.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,9 @@ namespace Logic;
 public interface IAdminService
 {
     List<Admin> GetAll();
-    void Add(string name,string lastName, string userName, int age, string password, string email, string address);
-    void Update(int Id, string name,string lastName, string userName, int age, string password, string email, string address);  
+    Admin GetById(int Id);
+    void Add(CreateAdminDto dto);
+    void Update(UpdateAdminDto dto);  
     void Delete(int Id);    
 }
 public class AdminService : IAdminService
@@ -28,32 +30,50 @@ public class AdminService : IAdminService
         return admins;
     }
 
-    public void Add(string name,string lastName, string userName, int age, string password, string email, string address)
+    public Admin GetById(int id)
+    {
+        var admin = _context.Admins.Where(i => i.Id == id)            
+            .Select(i => new Admin
+            {
+               Id = i.Id,
+               Name = i.Name,
+               LastName = i.LastName,
+               UserName = i.UserName,
+               Age = i.Age,
+               Password = i.Password,
+               Email = i.Email,
+               Address = i.Address
+            }).FirstOrDefault();        
+ 
+        return admin;
+    }
+
+    public void Add(CreateAdminDto dto)
     {
         Admin admin = new Admin();
-        admin.Name = name;
-        admin.LastName = lastName;
-        admin.UserName = userName;
-        admin.Age = age;
-        admin.Password = password;
-        admin.Email = email;
-        admin.Address = address;
+        admin.Name = dto.Name;
+        admin.LastName = dto.LastName;
+        admin.UserName = dto.UserName;
+        admin.Age = dto.Age;
+        admin.Password = dto.Password;
+        admin.Email = dto.Email;
+        admin.Address = dto.Address;
 
         _context.Admins.Add(admin);
         _context.SaveChanges();
     }
     
-    public void Update(int Id, string name,string lastName, string userName, int age, string password, string email, string address)
+    public void Update(UpdateAdminDto dto)
     {
         Admin admin = new Admin();
-        admin.Id = Id;
-        admin.Name=name;
-        admin.LastName = lastName;
-        admin.UserName = userName;
-        admin.Age = age;
-        admin.Password = password;
-        admin.Email = email;
-        admin.Address = address;
+        admin.Id = dto.Id;
+        admin.Name=dto.Name;
+        admin.LastName = dto.LastName;
+        admin.UserName = dto.UserName;
+        admin.Age = dto.Age;
+        admin.Password = dto.Password;
+        admin.Email = dto.Email;
+        admin.Address = dto.Address;
 
         _context.Admins.Update(admin);
         _context.SaveChanges();
@@ -67,5 +87,4 @@ public class AdminService : IAdminService
         _context.Admins.Remove(admin);
         _context.SaveChanges();
     }
-
 }

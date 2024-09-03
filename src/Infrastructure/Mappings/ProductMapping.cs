@@ -12,6 +12,12 @@ public class ProductMapping : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
+        builder.HasOne(a => a.Admin)
+            .WithMany(i => i.Products)
+            .HasForeignKey(a => a.AdminId)
+            .OnDelete(DeleteBehavior.ClientSetNull);
+        
+        
         builder.HasKey(i => i.Id);
 
 
