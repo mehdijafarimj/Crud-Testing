@@ -12,14 +12,7 @@ public class AdminMapping : IEntityTypeConfiguration<Admin>
 {
     public void Configure(EntityTypeBuilder<Admin> builder)
     {
-        builder.HasMany(i => i.Users)
-            .WithOne(a => a.Admin)
-            .HasForeignKey(a => a.AdminId)
-            .OnDelete(DeleteBehavior.ClientSetNull);
-
-
         builder.HasKey(i => i.Id);
-
 
         builder.Property(i => i.Name)
             .HasMaxLength(20)

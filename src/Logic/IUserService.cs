@@ -1,11 +1,12 @@
 ﻿using Domain;
 using Infrastructure;
 using Logic.Dtos;
+using Logic.ViewModels;
 
 namespace Logic;
 public interface IUserService
 {
-    List<User> GetAll();
+    List<GetAllUserViewModel> GetAll();
     User GetById(int id);
     void Add(CreateUserDto dto);
     void Update(UpdateUserDto dto);
@@ -19,9 +20,16 @@ public class UserService : IUserService
         _context = context;
     }
 
-    public List<User> GetAll()
+    public List<GetAllUserViewModel> GetAll()
     {
-        var users = _context.Users.ToList();
+        var users = _context.Users
+            .Select(i => new GetAllUserViewModel()
+            {
+                Name = i.Name,
+                Family = i.LastName,
+                Age = i.Age
+            }).ToList();
+
         return users;
     }
 
@@ -30,14 +38,13 @@ public class UserService : IUserService
         var user = _context.Users.Where(i => i.Id == id)
             .Select(i => new User
             {
-               Id = i.Id,
-               Name = i.Name,
-               LastName = i.LastName,
-               Age = i.Age,
-               Address = i.Address,
-               NationalCode = i.NationalCode
+                Id = i.Id,
+                Name = i.Name,
+                LastName = i.LastName,
+                Address = i.Address,
+                NationalCode = i.NationalCode
             }).FirstOrDefault();
-       
+
         return user;
     }
 
@@ -75,5 +82,5 @@ public class UserService : IUserService
 
         _context.Users.Remove(user);
         _context.SaveChanges();
-    }    
+    }
 }
