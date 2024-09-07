@@ -14,6 +14,6 @@ public class User
     public string Address { get; set; }
     public string NationalCode { get; set; }
     public virtual Admin Admin { get; set; }
-    public int? AdminId { get; set; }
+    public int AdminId { get; set; }
 }
 
