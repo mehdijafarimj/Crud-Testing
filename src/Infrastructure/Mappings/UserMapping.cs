@@ -20,6 +20,7 @@ public class UserMapping : IEntityTypeConfiguration<User>
         
         builder.HasKey(i => i.Id);
 
+
         builder.Property(i => i.Name)
         .HasMaxLength(50)
         .IsRequired();

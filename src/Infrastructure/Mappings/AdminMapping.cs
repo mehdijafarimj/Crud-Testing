@@ -14,7 +14,13 @@ public class AdminMapping : IEntityTypeConfiguration<Admin>
     {
         builder.HasKey(i => i.Id);
 
+
         builder.Property(i => i.Name)
+            .HasMaxLength(20)
+            .IsRequired();
+
+
+        builder.Property(i => i.LastName)
             .HasMaxLength(20)
             .IsRequired();
 
