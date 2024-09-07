@@ -15,7 +15,7 @@ public class UserController:ControllerBase
         _userService = userService;
     }
 
-    [HttpGet]
+    [HttpGet("GetAll")]
     public IActionResult GetAll()
     {        
         var users = _userService.GetAll();
