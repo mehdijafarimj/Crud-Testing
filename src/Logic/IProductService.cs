@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Infrastructure;
 using Logic.Dtos;
+using Logic.ViewModels;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 namespace Logic;
 public interface IProductService
 {
-    List<Product> GetAll();
+    List<GetAllProductVm> GetAll();
     Product GetById(int Id);
     void Add(CreateProductDto dto);
     void Update(UpdateProductDto dto);
@@ -25,12 +26,18 @@ public class ProductService : IProductService
         _context = context;
     }
 
-    public List<Product> GetAll()
+    public List<GetAllProductVm> GetAll()
     {
-        var products = _context.Products.ToList();
+        var products = _context.Products
+            .Select(i => new GetAllProductVm
+            {
+                Name = i.Name,
+                Price = i.Price,
+                Description = i.Description,  
+            }).ToList();
         return products;    
     }
-
+    
     public Product GetById(int id)
     {
         var product = _context.Products.Where(i => i.Id == id)
@@ -51,6 +58,7 @@ public class ProductService : IProductService
         product.Name = dto.Name;
         product.Price = dto.Price;
         product.Description = dto.Description;
+        product.AdminId = dto.AdminId;
 
         _context.Products.Add(product);
         _context.SaveChanges();
@@ -63,6 +71,7 @@ public class ProductService : IProductService
         product.Name = dto.Name;
         product.Price = dto.Price;
         product.Description = dto.Description;
+        product.AdminId = dto.AdminId;
 
         _context.Products.Update(product);
         _context.SaveChanges();

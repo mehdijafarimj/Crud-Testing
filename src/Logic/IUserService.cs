@@ -6,7 +6,7 @@ using Logic.ViewModels;
 namespace Logic;
 public interface IUserService
 {
-    List<GetAllUserViewModel> GetAll();
+    List<GetAllUserVm> GetAll();
     User GetById(int id);
     void Add(CreateUserDto dto);
     void Update(UpdateUserDto dto);
@@ -20,13 +20,13 @@ public class UserService : IUserService
         _context = context;
     }
 
-    public List<GetAllUserViewModel> GetAll()
+    public List<GetAllUserVm> GetAll()
     {
         var users = _context.Users
-            .Select(i => new GetAllUserViewModel()
+            .Select(i => new GetAllUserVm()
             {
                 Name = i.Name,
-                Family = i.LastName,
+                LastName = i.LastName,
                 Age = i.Age
             }).ToList();
 
@@ -56,6 +56,7 @@ public class UserService : IUserService
         user.Age = dto.Age;
         user.Address = dto.Address;
         user.NationalCode = dto.NationalCode;
+        user.AdminId = dto.AdminId;
 
         _context.Users.Add(user);
         _context.SaveChanges();
@@ -70,6 +71,7 @@ public class UserService : IUserService
         user.Age = dto.Age;
         user.Address = dto.Address;
         user.NationalCode = dto.NationalCode;
+        user.AdminId = dto.AdminId;
 
         _context.Users.Update(user);
         _context.SaveChanges();
