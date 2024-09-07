@@ -15,7 +15,7 @@ public class AdminController : ControllerBase
     {
         _adminService = adminService;
     }
-  
+
     [HttpGet("GetAll")]
     public IActionResult GetAll()
     {
@@ -23,13 +23,27 @@ public class AdminController : ControllerBase
         return Ok(admins);
     }
 
-    [HttpGet("GetById")]
-    public IActionResult GetById(int Id)
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
     {
-        var admin = _adminService.GetById(Id);
+        var admin = _adminService.GetById(id);
         return Ok(admin);
     }
- 
+
+    [HttpGet("GetWithUsers/{id}")]
+    public IActionResult GetWithUsers(int id)
+    {
+        var admin = _adminService.GetAdminWithUser(id);
+        return Ok(admin);
+    }
+
+    [HttpGet("getWithProducts/{id}")]
+    public IActionResult GetWithProducts(int id)
+    {
+        var admin = _adminService.GetAdminWithProduct(id); 
+        return Ok(admin);
+    }
+
     [HttpPost]
     public IActionResult AddAdmin(CreateAdminDto dto)
     {
@@ -51,8 +65,8 @@ public class AdminController : ControllerBase
         return NoContent();
     }
 }
-    
 
-      
-    
+
+
+
 
