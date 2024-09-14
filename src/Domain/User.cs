@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain;
+﻿namespace Domain;
 public class User
 {
     public int Id { get; set; }
@@ -12,8 +6,10 @@ public class User
     public string LastName { get; set; }
     public int Age { get; set; }
     public string Address { get; set; }
+    public string Password { get; set; }
     public string NationalCode { get; set; }
     public virtual Admin Admin { get; set; }
     public int AdminId { get; set; }
+    public List<Product> Products { get; set; }
 }
 

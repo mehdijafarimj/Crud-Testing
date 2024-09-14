@@ -1,8 +1,10 @@
 ﻿using Logic;
 using Logic.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRUD_Testing.Controllers;
+[Authorize]
 [ApiController]
 [Route("api/[Controller]")]
 public class ProductController:ControllerBase
@@ -29,18 +31,33 @@ public class ProductController:ControllerBase
     }
     
     [HttpPost]
-    public IActionResult AddProduct(CreateProductDto dto)
+    public IActionResult AddProduct(CreateProductDtoForAdmin dto)
     {
         _productService.Add(dto);
         return NoContent();
     }
 
+    [HttpPost("UserProduct")]
+    public IActionResult AddProductForUser(CreateProductDtoForUser dto)
+    {
+        _productService.AddForUser(dto);
+        return NoContent();
+    }
+
     [HttpPut]
-    public IActionResult UpdateProduct(UpdateProductDto dto)
+    public IActionResult UpdateProduct(UpdateProductDtoForAdmin dto)
     {
         _productService.Update(dto);
         return NoContent();
     }
+
+    [HttpPut("UpdateUserProduct")]
+    public IActionResult UpdateUserProduct(UpdateProductDtoForUser dto)
+    {
+        _productService.UpdateUserProduct(dto);
+        return NoContent();
+    }
+
     [HttpDelete("{Id}")]
     public IActionResult DeleteProduct(int Id)
     {

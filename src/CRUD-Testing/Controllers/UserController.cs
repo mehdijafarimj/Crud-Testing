@@ -1,9 +1,11 @@
 ﻿using Logic;
 using Logic.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.AccessControl;
 
 namespace CRUD_Testing.Controllers;
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 
@@ -26,6 +28,13 @@ public class UserController:ControllerBase
     public IActionResult GetById(int Id)
     {
         var user = _userService.GetById(Id);
+        return Ok(user);
+    }
+
+    [HttpGet("GetWithProducts/{id}")]
+    public IActionResult GetUserWtihProduct(int id)
+    {
+        var user = _userService.GetUserWithProduct(id);
         return Ok(user);
     }
   

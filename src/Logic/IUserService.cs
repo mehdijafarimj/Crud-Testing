@@ -2,15 +2,18 @@
 using Infrastructure;
 using Logic.Dtos;
 using Logic.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Logic;
 public interface IUserService
 {
     List<GetAllUserVm> GetAll();
+    GetUserWithProductVm GetUserWithProduct(int userProductId);
     User GetById(int id);
     void Add(CreateUserDto dto);
     void Update(UpdateUserDto dto);
     void Delete(int Id);
+    User GetByNationalCode(string nationalCode);
 }
 public class UserService : IUserService
 {
@@ -33,6 +36,26 @@ public class UserService : IUserService
         return users;
     }
 
+    public GetUserWithProductVm GetUserWithProduct(int userProductId)
+    {
+        var user = _context.Users
+            .Include(i => i.Products)
+            .Where(i => i.Id == userProductId)
+            .Select(i => new GetUserWithProductVm()
+            {
+                Name = i.Name,
+                LastName = i.LastName,
+                ProductVm = i.Products.Select(i => new GetProductVm()
+                {
+                    Name = i.Name,
+                    Price = i.Price,
+                    Description = i.Description
+                }).ToList()
+            }).FirstOrDefault();
+
+        return user;
+    }
+
     public User GetById(int id)
     {
         var user = _context.Users.Where(i => i.Id == id)
@@ -53,6 +76,7 @@ public class UserService : IUserService
         User user = new User();
         user.Name = dto.Name;
         user.LastName = dto.LastName;
+        user.Password = dto.Password;
         user.Age = dto.Age;
         user.Address = dto.Address;
         user.NationalCode = dto.NationalCode;
@@ -61,13 +85,14 @@ public class UserService : IUserService
         _context.Users.Add(user);
         _context.SaveChanges();
     }
-
+     
     public void Update(UpdateUserDto dto)
     {
         User user = new User();
         user.Id = dto.Id;
         user.Name = dto.Name;
         user.LastName = dto.LastName;
+        user.Password = dto.Password;
         user.Age = dto.Age;
         user.Address = dto.Address;
         user.NationalCode = dto.NationalCode;
@@ -84,5 +109,11 @@ public class UserService : IUserService
 
         _context.Users.Remove(user);
         _context.SaveChanges();
+    }
+
+    public User GetByNationalCode(string nationalCode)
+    {
+        var user = _context.Users.FirstOrDefault(i => i.NationalCode == nationalCode);
+        return user!;
     }
 }

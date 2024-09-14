@@ -5,7 +5,7 @@
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class deletedatabaseandreupdatedatabase : Migration
+    public partial class fixedpasswordpropertyforcreatinguser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

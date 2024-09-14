@@ -51,12 +51,12 @@ public class AdminService : IAdminService
                    LastName = i.LastName,
                    UserVm = i.Users.Select(i => new GetUserVm()
                    {
+                       Id = i.Id,
                        Name = i.Name,
                        LastName = i.LastName,
                    }).ToList()
                }).FirstOrDefault();
 
-        _context.SaveChanges();
         return admin;
     }
 
@@ -77,7 +77,6 @@ public class AdminService : IAdminService
                 }).ToList()
             }).FirstOrDefault();
 
-        _context.SaveChanges();
         return admin;
     }
 

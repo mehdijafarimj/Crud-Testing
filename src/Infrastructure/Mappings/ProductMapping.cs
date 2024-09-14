@@ -16,8 +16,14 @@ public class ProductMapping : IEntityTypeConfiguration<Product>
             .WithMany(i => i.Products)
             .HasForeignKey(a => a.AdminId)
             .OnDelete(DeleteBehavior.ClientSetNull);
+
+
+        builder.HasOne(i => i.User)
+            .WithMany(i => i.Products)
+            .HasForeignKey(i => i.UserProductId)
+            .OnDelete(DeleteBehavior.ClientSetNull);
         
-        
+
         builder.HasKey(i => i.Id);
 
 

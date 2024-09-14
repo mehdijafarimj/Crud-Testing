@@ -2,6 +2,7 @@
 using Infrastructure;
 using Logic.Dtos;
 using Logic.ViewModels;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,10 @@ public interface IProductService
 {
     List<GetAllProductVm> GetAll();
     Product GetById(int Id);
-    void Add(CreateProductDto dto);
-    void Update(UpdateProductDto dto);
+    void Add(CreateProductDtoForAdmin dto);
+    void AddForUser(CreateProductDtoForUser dto);
+    void Update(UpdateProductDtoForAdmin dto);
+    void UpdateUserProduct(UpdateProductDtoForUser dto);
     void Delete(int Id);
 }
 public class ProductService : IProductService
@@ -47,12 +50,12 @@ public class ProductService : IProductService
             Name = i.Name,
             Price = i.Price,
             Description = i.Description
-        }).FirstOrDefault();
+        }).FirstOrDefault(); 
 
         return product;
     }
 
-    public void Add(CreateProductDto dto)
+    public void Add(CreateProductDtoForAdmin dto)
     {
         Product product = new Product();
         product.Name = dto.Name;
@@ -64,7 +67,19 @@ public class ProductService : IProductService
         _context.SaveChanges();
     }
     
-    public void Update(UpdateProductDto dto)
+    public void AddForUser(CreateProductDtoForUser dto)
+    {
+        Product product = new Product();
+        product.Name = dto.Name;
+        product.Price = dto.Price;
+        product.Description = dto.Description;
+        product.UserProductId = dto.UserProductId;
+
+        _context.Products.Add(product);
+        _context.SaveChanges();
+    }
+
+    public void Update(UpdateProductDtoForAdmin dto)
     {
         Product product = new Product();
         product.Id = dto.Id;
@@ -72,6 +87,18 @@ public class ProductService : IProductService
         product.Price = dto.Price;
         product.Description = dto.Description;
         product.AdminId = dto.AdminId;
+        
+        _context.Products.Update(product);
+        _context.SaveChanges();
+    }
+
+    public void UpdateUserProduct(UpdateProductDtoForUser dto)
+    {
+        Product product = new Product();
+        product.Name = dto.Name;
+        product.Price = dto.Price;
+        product.Description = dto.Description;
+        product.UserProductId = dto.UserProductId;
 
         _context.Products.Update(product);
         _context.SaveChanges();

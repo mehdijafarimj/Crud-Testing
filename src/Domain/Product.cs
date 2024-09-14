@@ -12,5 +12,7 @@ public class Product
     public double Price { get; set; }
     public string Description { get; set; }
     public virtual Admin Admin { get; set; }
-    public int AdminId { get; set; }
+    public int? AdminId { get; set; }
+    public virtual User User { get; set; }
+    public int? UserProductId { get; set; }
 }
