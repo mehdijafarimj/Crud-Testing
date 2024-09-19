@@ -29,7 +29,7 @@ public class ProductController:ControllerBase
         var product = _productService.GetById(Id);
         return Ok(product);
     }
-    
+
     [HttpPost]
     public IActionResult AddProduct(CreateProductDtoForAdmin dto)
     {
