@@ -1,14 +1,11 @@
-﻿using Domain;
-using Infrastructure;
-using Logic;
+﻿using Logic;
 using Logic.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace CRUD_Testing.Controllers;
-[Authorize]
 [ApiController]
+[Authorize]
 [Route("api/[Controller]")]
 public class AdminController : ControllerBase
 {
@@ -42,7 +39,7 @@ public class AdminController : ControllerBase
     [HttpGet("getWithProducts/{id}")]
     public IActionResult GetWithProducts(int id)
     {
-        var admin = _adminService.GetAdminWithProduct(id); 
+        var admin = _adminService.GetAdminWithProduct(id);
         return Ok(admin);
     }
 
