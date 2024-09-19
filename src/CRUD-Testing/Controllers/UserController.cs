@@ -1,14 +1,15 @@
-﻿using Logic;
+﻿using CRUD_Testing.Identity;
+using Logic;
 using Logic.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.AccessControl;
 
 namespace CRUD_Testing.Controllers;
-[Authorize]
+
 [ApiController]
 [Route("api/[controller]")]
-
+[Authorize]
 public class UserController:ControllerBase
 {
     private readonly IUserService _userService;
@@ -37,14 +38,15 @@ public class UserController:ControllerBase
         var user = _userService.GetUserWithProduct(id);
         return Ok(user);
     }
-  
+
+    [Authorize(Policy = "adminpolicy")]
     [HttpPost]
     public IActionResult AddUser(CreateUserDto dto)    
     {
         _userService.Add(dto);
         return NoContent(); 
     }
-    
+
     [HttpPut]
     public IActionResult UpdateUser(UpdateUserDto dto)
     {

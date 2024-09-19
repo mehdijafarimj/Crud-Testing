@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using CRUD_Testing.Identity;
 using Domain;
 using Logic;
 using Microsoft.AspNetCore.Identity.Data;
@@ -26,19 +27,12 @@ public class LoginController : ControllerBase
     [HttpPost]
     public IActionResult GenerateToken([FromBody] LoginRequest loginRequest)
     {
-        //Logic for login process 
-        //If Login and password was correct then proceed to generate token.
-
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-        
-        var secToken = new JwtSecurityToken(_config["Jwt:Issuer"],
+        var token = JwtHelper.GetJwtToken("javid",
+            _config["Jwt:Key"],
             _config["Jwt:Issuer"],
-            null,
-            expires: DateTime.Now.AddMinutes(10),
-            signingCredentials: credentials);
-
-        var token = new JwtSecurityTokenHandler().WriteToken(secToken);
+            _config["Jwt:Issuer"],
+            TimeSpan.FromHours(1),
+            [ new(ClaimTypes.Role, "admin") ]);
 
         return Ok(token);
     }
