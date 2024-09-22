@@ -9,7 +9,7 @@ namespace CRUD_Testing.Controllers;
 public class ProductController:ControllerBase
 {
     private readonly IProductService _productService;
-
+     
     public ProductController(IProductService product)
     {
         _productService = product;
