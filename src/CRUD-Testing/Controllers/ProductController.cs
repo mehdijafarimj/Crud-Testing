@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRUD_Testing.Controllers;
-[Authorize]
 [ApiController]
 [Route("api/[Controller]")]
 public class ProductController:ControllerBase
@@ -30,6 +29,7 @@ public class ProductController:ControllerBase
         return Ok(product);
     }
 
+    [Authorize(Policy = "adminPolicy")]
     [HttpPost]
     public IActionResult AddProduct(CreateProductDtoForAdmin dto)
     {
@@ -37,6 +37,7 @@ public class ProductController:ControllerBase
         return NoContent();
     }
 
+    [Authorize(Policy = "adminPolicy")]
     [HttpPost("UserProduct")]
     public IActionResult AddProductForUser(CreateProductDtoForUser dto)
     {
@@ -44,6 +45,7 @@ public class ProductController:ControllerBase
         return NoContent();
     }
 
+    [Authorize(Policy = "adminPolicy")]
     [HttpPut]
     public IActionResult UpdateProduct(UpdateProductDtoForAdmin dto)
     {
@@ -51,6 +53,7 @@ public class ProductController:ControllerBase
         return NoContent();
     }
 
+    [Authorize(Policy = "adminPolicy")]
     [HttpPut("UpdateUserProduct")]
     public IActionResult UpdateUserProduct(UpdateProductDtoForUser dto)
     {
@@ -58,6 +61,7 @@ public class ProductController:ControllerBase
         return NoContent();
     }
 
+    [Authorize(Policy = "adminPolicy")]
     [HttpDelete("{Id}")]
     public IActionResult DeleteProduct(int Id)
     {
