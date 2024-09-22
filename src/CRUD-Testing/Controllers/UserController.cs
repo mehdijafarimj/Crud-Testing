@@ -9,7 +9,6 @@ namespace CRUD_Testing.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
 public class UserController:ControllerBase
 {
     private readonly IUserService _userService;
@@ -47,6 +46,7 @@ public class UserController:ControllerBase
         return NoContent(); 
     }
 
+    [Authorize(Policy = "adminPolicy")]
     [HttpPut]
     public IActionResult UpdateUser(UpdateUserDto dto)
     {
@@ -54,6 +54,7 @@ public class UserController:ControllerBase
         return NoContent();
     }
 
+    [Authorize(Policy = "adminPolicy")]
     [HttpDelete("{Id}")]
     public IActionResult DeleteUser(int Id)
     {
