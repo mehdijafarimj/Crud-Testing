@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CRUD_Testing.Controllers;
 [ApiController]
-[Authorize]
 [Route("api/[Controller]")]
 public class AdminController : ControllerBase
 {
@@ -43,6 +42,7 @@ public class AdminController : ControllerBase
         return Ok(admin);
     }
 
+    [Authorize(Policy = "adminPolicy")]
     [HttpPost]
     public IActionResult AddAdmin(CreateAdminDto dto)
     {
@@ -50,6 +50,7 @@ public class AdminController : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Policy = "adminPolicy")]
     [HttpPut]
     public IActionResult UpdateAdmin(UpdateAdminDto dto)
     {
@@ -57,6 +58,7 @@ public class AdminController : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Policy = "adminPolicy")]
     [HttpDelete("{Id}")]
     public IActionResult DeleteAdmin(int Id)
     {
